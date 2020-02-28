@@ -108,11 +108,11 @@ for index=1:size(region_frames,1)
     frame_num_of_max_faces(:,index)=maxind;
 end
 %%%%%%%%%%%%%
-frame_num_of_max_faces(frame_num_of_max_faces(:,2)==0,2)=frame_num_of_max_faces(frame_num_of_max_faces(:,2)==0,1);
-frame_num_of_max_faces(frame_num_of_max_faces(:,3)==0,3)=frame_num_of_max_faces(frame_num_of_max_faces(:,3)==0,2);
-frame_num_of_max_faces(frame_num_of_max_faces(:,4)==0,4)=frame_num_of_max_faces(frame_num_of_max_faces(:,4)==0,3);
-frame_num_of_max_faces(frame_num_of_max_faces(:,5)==0,5)=frame_num_of_max_faces(frame_num_of_max_faces(:,5)==0,4);
-frame_num_of_max_faces(frame_num_of_max_faces(:,6)==0,6)=frame_num_of_max_faces(frame_num_of_max_faces(:,6)==0,5);
+% filling the empty faces in lower scale versions from higher scale
+% versions
+for i=2:size(frame_num_of_max_faces,2)
+    frame_num_of_max_faces(frame_num_of_max_faces(:,i)==0,i)=frame_num_of_max_faces(frame_num_of_max_faces(:,i)==0,i-1);
+end
 %%%%%%%%%%%%%
 selected_view=frame_num_of_max_faces(:,1);
 faces_indexes=(1:length(selected_view))';
