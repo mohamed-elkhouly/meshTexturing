@@ -1,0 +1,10 @@
+function centers_3d=get_faces_centers(cur_new_faces,cur_new_vertices)
+vertices_1=cur_new_vertices(cur_new_faces(:,1),:);
+vertices_2=cur_new_vertices(cur_new_faces(:,2),:);
+vertices_3=cur_new_vertices(cur_new_faces(:,3),:);
+x=(vertices_1(:,1)+vertices_2(:,1)+vertices_3(:,1))/3;
+y=(vertices_1(:,2)+vertices_2(:,2)+vertices_3(:,2))/3;
+z=(vertices_1(:,3)+vertices_2(:,3)+vertices_3(:,3))/3;
+w=z;
+w(:)=1;
+centers_3d=[x,y,z,w];

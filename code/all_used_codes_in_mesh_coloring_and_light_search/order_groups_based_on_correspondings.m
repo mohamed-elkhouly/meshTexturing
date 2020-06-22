@@ -1,0 +1,2 @@
+function current_connected_groups2=order_groups_based_on_correspondings(current_connected_groups,faces_correspondences1,region_faces)
+for i=1:size()
