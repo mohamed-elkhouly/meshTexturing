@@ -1,0 +1,15 @@
+function mesh=read_poses(mesh,folder_path)
+% folder_path='D:\1LXtFkjw3qL_1\camera\'
+numfiles_in_folder=dir([folder_path,'/camera/*.txt']);
+for i=1:length(numfiles_in_folder)
+    pose_number= sprintf( '%06d', i-1 ) ;
+    file_path=[folder_path,'/camera/frame-', pose_number,'.pose.txt'];
+    fileID = fopen(file_path,'r');
+    formatSpec = '%f';
+    A = fscanf(fileID,formatSpec);
+    A=reshape(A,[4 4])';
+    mesh.campos(i,:)=A(1:3,4);
+    mesh.camdir(i,:)=A(1:3,3);% which is the forward direction which is the third column
+    fclose('all');
+end
+d=[];
