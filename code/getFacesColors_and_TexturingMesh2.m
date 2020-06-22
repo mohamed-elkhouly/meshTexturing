@@ -4,7 +4,7 @@ function  [faces_colors]=getFacesColors_and_TexturingMesh2(mesh)
 % end
 warning ('off','all');
 [face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces2(mesh);% THIS ONE CALCULATE AVERAGE COLORS
-#[face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces(mesh);
+[face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces(mesh);
 
 region_frames=mesh.frame_number;%
 texture_exist=false(mesh.frame_height,mesh.frame_width,size(region_frames,1));%

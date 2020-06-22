@@ -21,7 +21,7 @@ all_proj_mat=cell(size(region_frames,1),1);
 tic;
 for index=1:size(region_frames,1)
     
-%     current_vertices_frame=vertex_exist(:,:,index);
+    %     current_vertices_frame=vertex_exist(:,:,index);
     frame_number=region_frames(index);
     [~,image_gradients,image]=prepare_our_image(frame_number,index,all_images,mesh.data_path) ;
     all_images(index,:,:,:)=image;
@@ -57,7 +57,7 @@ for index=1:size(region_frames,1)
         face_indexes_in_the_image=all_indexes_in_idxx(index_f(faces_places_in_image_2(m):faces_places_in_image_2(m+1)-1));
         length_required_indexes_for_access_image=length(face_indexes_in_the_image);
         data_term_faces_in_frames(hitted_faces_2(ui),index)=sum(image_gradients(face_indexes_in_the_image));
-%         consistency_term_faces_in_frames(hitted_faces_2(ui),index)=trimmean(image(face_indexes_in_the_image),30);
+        %         consistency_term_faces_in_frames(hitted_faces_2(ui),index)=trimmean(image(face_indexes_in_the_image),30);
         consistency_term_faces_in_frames(hitted_faces_2(ui),index)=mean(image(face_indexes_in_the_image));
         size_faces_in_frames(hitted_faces_2(ui),index)=length_required_indexes_for_access_image;
     end
@@ -76,7 +76,7 @@ end
 % size_faces_in_frames(indices_to_be_excluded)=0;
 % data_term_faces_in_frames(indices_to_be_excluded)=0;
 % consistency_term_faces_in_frames(indices_to_be_excluded)=0;
-% 
+%
 % % weight the consistency colors by the number of pixels which they have
 % % been captured from.  and remove the low compatible views with ours (which could have bad projection)
 % consistency_term_faces_in_frames_mean=sum(consistency_term_faces_in_frames.*size_faces_in_frames,2)./sum(size_faces_in_frames,2);
@@ -87,13 +87,13 @@ end
 % min_var=min(consistency_term_faces_in_frames_var,[],2);
 % consistency_term_faces_in_frames_var(consistency_term_faces_in_frames_var>(min_var*4))=0;% var>min(var)*4=0
 % consistency_term_faces_in_frames_var(isinf(consistency_term_faces_in_frames_var))=0;
-% 
+%
 % % remove the inconsistent views from other matrices
 % size_faces_in_frames(consistency_term_faces_in_frames_var==0)=0;
 % data_term_faces_in_frames(consistency_term_faces_in_frames_var==0)=0;
 % [max_val,selected_view]=max(data_term_faces_in_frames,[],2);% here we will select the best view for each face.
 % toc
-% 
+%
 % faces_indexes=(1:length(selected_view))';
 % selected_view(max_val==0)=[];
 % faces_indexes(max_val==0)=[];
@@ -154,11 +154,11 @@ parfor ui =1:length(faces_indexes)
     %        indw(indw<1)=1;% this step should be done after  get_face_indexes
     %     indh(indh<1)=1;% this step should be done after  get_face_indexes
     
-        third_dimen=index*ones(1,length(indw));
+    third_dimen=index*ones(1,length(indw));
     vertices_indices=sub2ind([height width index],indh(~vertices_flag),indw(~vertices_flag),third_dimen(~vertices_flag));
     vertex_exist_replacement(ui,1)={vertices_indices};
     vertex_exist_replacement2(ui,1)={vertices_indexes_of_current_face(~vertices_flag)};
-%     vertex_exist(vertices_indices)=vertices_indexes_of_current_face(~vertices_flag);% store vertices numbers in its corresponding position in frame& in the same time exclude out of frame vertices;
+    %     vertex_exist(vertices_indices)=vertices_indexes_of_current_face(~vertices_flag);% store vertices numbers in its corresponding position in frame& in the same time exclude out of frame vertices;
     [~,~,height_inds,width_inds]=get_face_indexes((indh-min(indh)+1),(indw-min(indw)+1));
     height_inds=height_inds+min(indh)-1;width_inds=width_inds+min(indw)-1;
     if(min_indw<1);width_inds=width_inds+(min_indw)-1;end
@@ -174,23 +174,23 @@ parfor ui =1:length(faces_indexes)
     
     faces_coord_in_orig_img_replacement(ui)={[indh,indw,min_indh,min_indw]};
     face_text_at_which_image_replacement(ui)={[curr_f,index]};
-face_text_indices_in_img_replacement(ui)={img_indices(:)};
-%     faces_coord_in_orig_img(curr_f,:)=[indh,indw];
-%     face_text_at_which_image(curr_f)=index;
-%     face_text_indices_in_img(curr_f)={img_indices(:)};
+    face_text_indices_in_img_replacement(ui)={img_indices(:)};
+    %     faces_coord_in_orig_img(curr_f,:)=[indh,indw];
+    %     face_text_at_which_image(curr_f)=index;
+    %     face_text_indices_in_img(curr_f)={img_indices(:)};
     
     
 end
 
 for ui =1:length(faces_indexes)
-        vertices_indices=cell2mat(vertex_exist_replacement(ui,1));
+    vertices_indices=cell2mat(vertex_exist_replacement(ui,1));
     vertices_indexes_of_current_face=cell2mat(vertex_exist_replacement2(ui,1));
     vertex_exist(vertices_indices)=vertices_indexes_of_current_face;% store vertices numbers in its corresponding position in frame& in the same time exclude out of frame vertices;
     curr_f_and_index=cell2mat(face_text_at_which_image_replacement(ui));%={[curr_f,index]};
     curr_f=curr_f_and_index(1);index=curr_f_and_index(2);
-        faces_coord_in_orig_img(curr_f,:)=cell2mat(faces_coord_in_orig_img_replacement(ui));
-        face_text_at_which_image(curr_f)=index;
-        face_text_indices_in_img(curr_f)=face_text_indices_in_img_replacement(ui);
+    faces_coord_in_orig_img(curr_f,:)=cell2mat(faces_coord_in_orig_img_replacement(ui));
+    face_text_at_which_image(curr_f)=index;
+    face_text_indices_in_img(curr_f)=face_text_indices_in_img_replacement(ui);
 end
 num_faces_in_frames=[];
 time_to_get_faces_colors=toc

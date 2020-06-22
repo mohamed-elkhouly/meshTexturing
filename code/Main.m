@@ -1,5 +1,5 @@
 clear all
-mesh.scene_name='scene1';
+mesh.scene_name='scene4';
 mesh.frame_height=1024;
 mesh.frame_width=1280;
 mesh=loadSceneData(mesh);
