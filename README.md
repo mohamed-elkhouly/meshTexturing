@@ -5,7 +5,10 @@ all of the next code working in blender 2.79
 
 Before getting any operation from the scene we may need to simplify our mesh and reduce the number of faces on it and also subdivide the large faces in the scene into small ones (refine), and convert squads into triangles
 the code in 
+
 meshTexturing/code/create_datascenes_in_blender/triangulate_and_get_area6.py is doing this
+
+
 To Bake the scene: 
 meshTexturing/code/create_datascenes_in_blender/create_texture_atlas2_for_create_each_alone.py
 
@@ -52,4 +55,27 @@ inside this folder there are three things:
 
 note that this organization follow the Matterport3D convention.
 
+
+============================
+
+After having a baked file of the scene, to get the colors of the baked model as a per-face colors or if we want to export as .obj file with .mtl 
+we can use the code in  
+
+meshTexturing/code/color_and_mesh_from_obj/change_images_names_to_object_name_and_export.py
+
+this code will create a folder with the same name of the opened blender file,
+inside this folder it will export the images from the .blend file and the .obj and the .mtl file
+
+after having the exported images and .obj and .mtl we can now have a per-face colors using the code in 
+meshTexturing/code/color_and_mesh_from_obj/get_faces_colors_from_obj.m
+
+to run this file it has to be in the same folder with other files alongside it in the same folder.
+the data which this file will work on should be on another folder inside this folder which this code in.
+
+the name of the folder which data is in should be manually set inside the code in "folder_name"
+
+this code should output two things:
+>> .ply file which contain the mesh of our scene because we will need it later 
+
+>> _baked_colors_per_face.mat which contain the [r,g,b] colors corresponding to each face accord
 
