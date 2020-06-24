@@ -79,3 +79,31 @@ this code should output two things:
 
 >> _baked_colors_per_face.mat which contain the [r,g,b] colors corresponding to each face accord
 
+===================================================
+
+with having the "cam_info" folder which has the "camera" and "frame" folders and "intrinsics.txt" file
+
+we should place these files inside the  "meshTexturing/code/data" folder  as another scene "scenex"
+ 
+we should place them inside the scene folder.
+ 
+inside the same "scene" folder we have to place the ".ply" file of our scene and it should be named with the same name of the scene folder.(the same with the intrinsic file).
+
+using these available information only we can calculate the average per-face colors from the rendered multi-view images using the code in 
+
+>>meshTexturing/code/Main.m
+
+we only have to set the scene name in "mesh.scene_name" then run up to line :
+
+"[faces_colors]=getFacesColors_and_TexturingMesh2_only_for_average_purpose(mesh);"
+
+this line will output the file "scenex_average_colors_per_face.mat" inside the scene folder.
+
+=================================
+
+if we want to compare between the average per-face colors and the baked per-face colors (which we got it before as "_baked_colors_per_face.mat"),
+we should place this "_baked_colors_per_face.mat" file inside the scene folder.
+
+then run the main up to the line "get_difference_between_baked_and_average(mesh)"
+
+this command will create three folders "baked_images" , "averaged_images" , and "difference_images"
