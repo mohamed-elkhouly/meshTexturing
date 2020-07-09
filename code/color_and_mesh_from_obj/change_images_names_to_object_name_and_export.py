@@ -3,6 +3,7 @@ import bmesh
 import sys
 import os
 import time
+
 start = time.time()
 bpy.app.debug_wm = False
 
