@@ -143,19 +143,26 @@ parfor ui =1:length(faces_indexes)
     indh=round(point_2d(2,:));
     vertices_flag=indw>width;% to know which vertices out of frame.
     %     back_indw=indw;
-    %     indw(indw>width)=width;% this step should be done after  get_face_indexes as it waste some of face indexes
+        
     vertices_flag=vertices_flag|indh>height;
     vertices_flag=vertices_flag|indw<1;
     vertices_flag=vertices_flag|indh<1;
     %     back_indh=indh;
-    %     indh(indh>height)=height;% this step should be done after  get_face_indexes as it waste some of face indexes
+        
     min_indw=min(indw);if(min_indw<1);indw=indw-(min_indw)+1;end
     min_indh=min(indh);if(min_indh<1);indh=indh-(min_indh)+1;end
     %        indw(indw<1)=1;% this step should be done after  get_face_indexes
     %     indh(indh<1)=1;% this step should be done after  get_face_indexes
     
+    indh(indh>height)=height;% this step should be done after  get_face_indexes as it waste some of face indexes
+    indw(indw>width)=width;% this step should be done after  get_face_indexes as it waste some of face indexes
+    
     third_dimen=index*ones(1,length(indw));
+%     try
     vertices_indices=sub2ind([height width index],indh(~vertices_flag),indw(~vertices_flag),third_dimen(~vertices_flag));
+%     catch
+%         d=[];
+%     end
     vertex_exist_replacement(ui,1)={vertices_indices};
     vertex_exist_replacement2(ui,1)={vertices_indexes_of_current_face(~vertices_flag)};
     %     vertex_exist(vertices_indices)=vertices_indexes_of_current_face(~vertices_flag);% store vertices numbers in its corresponding position in frame& in the same time exclude out of frame vertices;

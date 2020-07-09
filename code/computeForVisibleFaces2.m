@@ -88,9 +88,10 @@ average_face_color_trackR(average_face_color_trackR(:,2)~=0,1)=average_face_colo
 average_face_color_trackG(average_face_color_trackG(:,2)~=0,1)=average_face_color_trackG(average_face_color_trackG(:,2)~=0,1)./average_face_color_trackG(average_face_color_trackG(:,2)~=0,2);
 average_face_color_trackB(average_face_color_trackB(:,2)~=0,1)=average_face_color_trackB(average_face_color_trackB(:,2)~=0,1)./average_face_color_trackB(average_face_color_trackB(:,2)~=0,2);
 
-final_average_colors=uint8([average_face_color_trackR(:,1),average_face_color_trackG(:,1),average_face_color_trackB(:,1)]);
-figure,plot_CAD(mesh.f, mesh.v, '',final_average_colors)
+final_average_colors=([average_face_color_trackR(:,1),average_face_color_trackG(:,1),average_face_color_trackB(:,1)]);
+figure,plot_CAD(mesh.f, mesh.v, '',uint8(final_average_colors))
 delete(findall(gcf,'Type','light'));
+save([mesh.data_path ,'/marbled_bathroom_average_colors_per_face.mat'],'final_average_colors');
 d=[];
 % remove faces with low number of pixels(#pix<max(#)/lmpda)&&(#pix<omega)
 % lampda=3, omega=7

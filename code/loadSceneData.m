@@ -21,4 +21,5 @@ for i=1:step:length(mesh.pose)
     mesh.frame_face_mapping(i,:,:)=reshape(idxx,[mesh.frame_height mesh.frame_width]);
 end
 mesh.all_visible_faces=all_visible_faces;
+mesh.unique_visible_faces=unique(mesh.frame_face_mapping(:));
 % figure,plot_CAD(mesh.f, mesh.v, '',uint8(mesh.all_visible_faces));title('VisibleFaces');delete(findall(gcf,'Type','light'));

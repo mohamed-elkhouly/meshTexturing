@@ -3,7 +3,7 @@ function  [faces_colors]=getFacesColors_and_TexturingMesh2(mesh)
 %     region_frames=region_frames(:);
 % end
 warning ('off','all');
-[face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces2(mesh);% THIS ONE CALCULATE AVERAGE COLORS
+% [face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces2(mesh);% THIS ONE CALCULATE AVERAGE COLORS
 [face_text_at_which_image,vertex_exist,face_text_indices_in_img,all_images,faces_coord_in_orig_img]=computeForVisibleFaces(mesh);
 
 region_frames=mesh.frame_number;%
@@ -57,7 +57,7 @@ for index=1:size(region_frames,1)
         to_be_removed=[to_be_removed;index];
         continue;
     end
-    vr=vertices_coordinates_on_border(:,1);
+   vr=vertices_coordinates_on_border(:,1);
     vc=vertices_coordinates_on_border(:,2);
     G_vertices(index,1)={[r,c]};
     G_vertices(index,2)={min(r)};
@@ -124,11 +124,13 @@ faces_in_current_texture=cell2mat(faces_in_frame(i));
 end
 figure,plot_CAD(mesh.f, mesh.v, '',faces_colors);
 delete(findall(gcf,'Type','light'));
-mkdir(['Result']);
-mkdir(['Result/',mesh.scene_name]);
-mkdir(['Result/',mesh.scene_name,'/before']);
-mkdir(['Result/',mesh.scene_name,'/after']);
-
-tex_path=['Result/',mesh.scene_name,'/before'];
-combine_textures_in_one_for_consistent_texture(mesh,textures_images_and_faces,faces_coord_in_orig_img,tex_path,seems_coord);
+waechter_colors=faces_colors;
+save([mesh.data_path ,'/',mesh.scene_name,'_waechter_colors_per_face.mat'],'waechter_colors');
+% mkdir(['Result']);
+% mkdir(['Result/',mesh.scene_name]);
+% mkdir(['Result/',mesh.scene_name,'/before']);
+% mkdir(['Result/',mesh.scene_name,'/after']);
+% 
+% tex_path=['Result/',mesh.scene_name,'/before'];
+% combine_textures_in_one_for_consistent_texture(mesh,textures_images_and_faces,faces_coord_in_orig_img,tex_path,seems_coord);
 d=[];
