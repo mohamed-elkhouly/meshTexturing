@@ -123,11 +123,13 @@ there also part of the commented code to do the same for emmition nodes, but we 
 
 ========================================
 
-the other created file is for creating the rendering passes (['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol'] ) which will create also another folder called (result) all of these output images will be on it.
-I want also to add two more passes ( Specular, Diffuse).
+the other created file is for creating the rendering passes (['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol',  'Specular', 'Diffuse'] ) which will create also another folder called (result) all of these output images will be on it, each on its related folder (have its name e.g. "Depth") inside "result" folder.
 
 meshTexturing/code/create_datascenes_in_blender/Enable_rendering_passes.py
 
 Note: remember that we set the max of depth is 200
+
 Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics
 
+>> Diffuse = (( GlossInd + GlossDir ) * GlossCol ) + Emit
+>> Specular = ( GlossDir + GlossInd ) 

@@ -61,7 +61,7 @@ NodeRLayers.location = 0,0
 
 # create output node
 out_node = tree.nodes.new('CompositorNodeOutputFile')   
-out_node.location = 400,0
+out_node.location = 800,-200
 out_node.file_slots.remove(out_node.inputs[0])
 # link nodes
 links = tree.links
@@ -71,23 +71,63 @@ directory = os.path.dirname(blend_file_path)
 result_path=os.path.join(directory,'result')
 create_directory(result_path)
 out_node.base_path=result_path
+position_f=0
+pos_changer=-1
 #outputs_required=['Image','Emit', 'Normal','Depth','Shadow','IndexOB','DiffCol']  
-outputs_required=['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol']  
+outputs_required=['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol','Diffuse','Specular']  
 for cur_out in outputs_required:
-    create_directory(os.path.join(result_path,cur_out))
-    #current_output='Emit'
-    #out_node.select = True
-    #tree.nodes.active = out_node
-    #bpy.ops.node.output_file_remove_active_socket()
+    current_out_path=os.path.join(result_path,cur_out)
+    create_directory(current_out_path)
+    out_node = tree.nodes.new('CompositorNodeOutputFile')   
+    out_node.location = (890+pos_changer*90),position_f
+    pos_changer=pos_changer*-1
+    position_f=position_f-50
+    out_node.file_slots.remove(out_node.inputs[0])
     out_node.file_slots.new(cur_out)
-    out_node.file_slots[cur_out].format.file_format="PNG"
+    out_node.file_slots[cur_out].use_node_format=False
+    out_node.file_slots[cur_out].format.file_format="JPEG"    
+    out_node.base_path=current_out_path
+    if cur_out=='Diffuse' or cur_out=='Specular': 
+        if cur_out=='Diffuse':
+            add_node = tree.nodes.new('CompositorNodeMixRGB') 
+            mult_node = tree.nodes.new('CompositorNodeMixRGB')
+            add_emit_node = tree.nodes.new('CompositorNodeMixRGB')
+            add_node.location = 330,0
+            mult_node.location = 480,0
+            add_emit_node.location = 630,0
+            add_node.blend_type='ADD'
+            mult_node.blend_type='MULTIPLY'
+            add_emit_node.blend_type='ADD'            
+            link = links.new(NodeRLayers.outputs['DiffDir'], add_node.inputs[1])
+            link = links.new(NodeRLayers.outputs['DiffInd'], add_node.inputs[2])
+            link = links.new(add_node.outputs[0], mult_node.inputs[1])
+            link = links.new(NodeRLayers.outputs['DiffCol'], mult_node.inputs[2])
+            link = links.new(mult_node.outputs[0], add_emit_node.inputs[1])
+            link = links.new(NodeRLayers.outputs['Emit'], add_emit_node.inputs[2])
+            link = links.new(add_emit_node.outputs[0], out_node.inputs[cur_out])            
+        if cur_out=='Specular':
+            add_node_s = tree.nodes.new('CompositorNodeMixRGB') 
+            mult_node_s = tree.nodes.new('CompositorNodeMixRGB')
+            add_node_s.location = 330,-570
+            mult_node_s.location = 480,-570
+            add_node_s.blend_type='ADD'
+            mult_node_s.blend_type='MULTIPLY'
+            link = links.new(NodeRLayers.outputs['GlossDir'], add_node_s.inputs[1])
+            link = links.new(NodeRLayers.outputs['GlossInd'], add_node_s.inputs[2])
+            link = links.new(add_node_s.outputs[0], mult_node_s.inputs[1])
+            link = links.new(add_node_s.outputs[0], out_node.inputs[cur_out])
+            #link = links.new(NodeRLayers.outputs['GlossCol'], mult_node_s.inputs[2])
+            #link = links.new(mult_node_s.outputs[0], out_node.inputs[cur_out]) 
+        continue
+        
+    
     link = links.new(NodeRLayers.outputs[cur_out], out_node.inputs[cur_out])
     if cur_out=='Depth' or cur_out=='IndexOB':
         out_node.file_slots[cur_out].use_node_format=False
         if cur_out=='Depth':
             out_node.file_slots[cur_out].format.file_format="OPEN_EXR"
             map_range_node = tree.nodes.new('CompositorNodeMapRange') 
-            map_range_node.location = 200,200
+            map_range_node.location = 170,0
             map_range_node.inputs[2].default_value=200
             link = links.new(NodeRLayers.outputs[cur_out], map_range_node.inputs[0])
             link = links.new(map_range_node.outputs[0], out_node.inputs[cur_out])
@@ -95,24 +135,8 @@ for cur_out in outputs_required:
         if cur_out=='IndexOB':
             out_node.file_slots[cur_out].format.file_format="PNG"
             math_node = tree.nodes.new('CompositorNodeMath') 
-            math_node.location = 200,-450
+            math_node.location = 170,-450
             math_node.operation='DIVIDE'
             math_node.inputs[1].default_value=50
             link = links.new(NodeRLayers.outputs[cur_out], math_node.inputs[0])
             link = links.new(math_node.outputs[0], out_node.inputs[cur_out])
-            
-        
-        
-    #out_node.inputs.new( type = 'RGBA', name = cur_out)
-    #out_node.select = False
-    
-    #bpy.context.scene.update()
-    # Wait for 5 seconds
-    #time.sleep(1)
-    #image.update ()
-    #cur_img_name='Render Result' 
-    #new_img_name='normal'
-    #path=os.path.join(result_path,cur_out)
-    #ilepath_raw=path+'/'+new_img_name+'.png'
-    #img = bpy.data.images[cur_img_name]
-    #img.save_render(ilepath_raw)
