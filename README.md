@@ -132,4 +132,5 @@ Note: remember that we set the max of depth is 200
 Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics
 
 >> Diffuse = (( GlossInd + GlossDir ) * GlossCol ) + Emit
+
 >> Specular = ( GlossDir + GlossInd ) 
