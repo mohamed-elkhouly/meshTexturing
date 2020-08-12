@@ -56,7 +56,7 @@ inside this folder there are three things:
 note that this organization follow the Matterport3D convention.
 
 
-============================
+		============================
 
 After having a baked file of the scene, to get the colors of the baked model as a per-face colors or if we want to export as .obj file with .mtl 
 we can use the code in  
@@ -79,7 +79,7 @@ this code should output two things:
 
 >> _baked_colors_per_face.mat which contain the [r,g,b] colors corresponding to each face accord
 
-===================================================
+		===================================================
 
 with having the "cam_info" folder which has the "camera" and "frame" folders and "intrinsics.txt" file
 
@@ -99,7 +99,7 @@ we only have to set the scene name in "mesh.scene_name" then run up to line :
 
 this line will output the file "scenex_average_colors_per_face.mat" inside the scene folder.
 
-=================================
+		=================================
 
 if we want to compare between the average per-face colors and the baked per-face colors (which we got it before as "_baked_colors_per_face.mat"),
 we should place this "_baked_colors_per_face.mat" file inside the scene folder.
@@ -108,7 +108,7 @@ then run the main up to the line "get_difference_between_baked_and_average(mesh)
 
 this command will create three folders "baked_images" , "averaged_images" , and "difference_images"
 
-==================================
+		==================================
 
 Recently I created some files for preparing a dataset:
 to add a diffuse shader alongside with the gloss shader we can use the file:
@@ -121,9 +121,10 @@ Note: do not run it more than one time, otherwise it will create extra diffuse s
 
 there also part of the commented code to do the same for emmition nodes, but we do not need it for now.
 
-		========================================
+========================================
 
 the other created file is for creating the rendering passes (['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol'] ) which will create also another folder called (result) all of these output images will be on it.
 I want also to add two more passes ( Specular, Diffuse).
 
+meshTexturing/code/create_datascenes_in_blender/Enable_rendering_passes.py
 
