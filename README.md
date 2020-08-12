@@ -107,3 +107,23 @@ we should place this "_baked_colors_per_face.mat" file inside the scene folder.
 then run the main up to the line "get_difference_between_baked_and_average(mesh)"
 
 this command will create three folders "baked_images" , "averaged_images" , and "difference_images"
+
+==================================
+
+Recently I created some files for preparing a dataset:
+to add a diffuse shader alongside with the gloss shader we can use the file:
+
+meshTexturing/code/create_datascenes_in_blender/add_diffuse_to_gloss.py
+
+we added this function as when we tried to have the diffuse map from the scene, we find that the objects which have gloss shader only give black diffuse, but at real life it should be very small value at least, so we added a diffuse shader with the same color but it will be like 3% of the gloss, mean render = diffuse(0.03)+ gloss(0.97)  for glossy objects, we can change this values.
+
+Note: do not run it more than one time, otherwise it will create extra diffuse shader alongside with the old one.
+
+there also part of the commented code to do the same for emmition nodes, but we do not need it for now.
+
+		========================================
+
+the other created file is for creating the rendering passes (['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol'] ) which will create also another folder called (result) all of these output images will be on it.
+I want also to add two more passes ( Specular, Diffuse).
+
+
