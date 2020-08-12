@@ -128,3 +128,6 @@ I want also to add two more passes ( Specular, Diffuse).
 
 meshTexturing/code/create_datascenes_in_blender/Enable_rendering_passes.py
 
+Note: remember that we set the max of depth is 200
+Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics
+
