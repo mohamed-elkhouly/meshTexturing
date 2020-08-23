@@ -129,7 +129,7 @@ meshTexturing/code/create_datascenes_in_blender/Enable_rendering_passes.py
 
 Note: remember that we set the max of depth is 200
 
-Note: the id of each object has been set on the file (   .py)
+Note: the id of each object has been set in the same file (Enable_rendering_passes.py)
 
 Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics ( also note that the name of the output file is the same number of current keyframe which I change with each render.
 
