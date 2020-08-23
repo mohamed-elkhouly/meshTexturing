@@ -194,7 +194,7 @@ sensor_width=32;
 #sensor_fit=AUTO;
 width = 1280;
 height = 1024;
-render_samples=3000
+render_samples=10
 output_format='JPEG'
 
 
@@ -236,7 +236,7 @@ try:
 except:
     d=[]
 
-
+'''
 #sunny room
 cam_state=[
 [4.45561,	-1.76682,	3.13218,		88.6962,	0.145373,	64.064],
@@ -266,7 +266,7 @@ cam_state=[
 ]
 
 
-'''
+
 # r tamu
 cam_state=[
 [-3,	0.50,	1.5,		85,	0,	0],
@@ -296,7 +296,7 @@ cam_state=[
 ]
 
 
-
+'''
 
 #marbled bath
 cam_state=[[1.69079,	-1.32525,	0.959639,		85,	0,	330],
@@ -320,7 +320,7 @@ cam_state=[[1.69079,	-1.32525,	0.959639,		85,	0,	330],
 [-1.5654,	1.44154,	0.26184,		74.292,	0,	-29.3],
 ]
 
-'''
+
 
 blend_file_path = bpy.data.filepath
 directory = os.path.dirname(blend_file_path) 
@@ -359,7 +359,7 @@ except:
                 
 
 for count,state in enumerate(cam_state):
-	bpy.context.scene.frame_set(count)
+	#bpy.context.scene.frame_set(count)
     obj_camera.location.x = state[0]
     obj_camera.location.y = state[1]
     obj_camera.location.z = state[2]

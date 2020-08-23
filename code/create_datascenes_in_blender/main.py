@@ -2,10 +2,41 @@
 import bpy
 import os
 
+#bpy.ops.wm.console_toggle
 bpy.app.debug_wm = False
 blend_file_path = bpy.data.filepath
 directory = os.path.dirname(blend_file_path) 
 
+# Simplify (decimate)  and refine mesh
+filename = "triangulate_and_refine.py"
+path=os.path.join(directory,filename)
+bpy.ops.text.open(filepath=path)
+#exec(bpy.data.texts[filename].as_string())
+
+
+# Enable rendering passes 
+filename = "Enable_rendering_passes.py"
+path=os.path.join(directory,filename)
+bpy.ops.text.open(filepath=path)
+#exec(bpy.data.texts[filename].as_string())
+
+
+# Render related viewpoints 
+filename = "cam_pro2.py"
+path=os.path.join(directory,filename)
+bpy.ops.text.open(filepath=path)
+exec(bpy.data.texts[filename].as_string())
+
+
+
+
+
+
+
+
+
+
+''' 
 # Simplify (decimate)  and refine mesh
 filename = "triangulate_and_get_area6.py"
 path=os.path.join(directory,filename)
@@ -33,3 +64,4 @@ path=os.path.join(directory,filename)
 #bpy.ops.text.open(filepath=path)
 #exec(bpy.data.texts[filename].as_string())
 
+'''
