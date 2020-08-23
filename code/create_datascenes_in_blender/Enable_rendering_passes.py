@@ -12,10 +12,16 @@ def create_directory(path):
             for root, dirs, files in os.walk(path):
                 for file in files:
                     os.remove(os.path.join(root, file))
-                    
+
+
+
+
+# blender set the color space to "Linear" instead of "sRGB" which corresponds more closely to nature, and makes computations more physically accurate.
+bpy.data.scenes["Scene"].sequencer_colorspace_settings.name="Linear"
+bpy.data.scenes["Scene"].view_settings.look='None'                         
 bpy.context.scene.render.layers["RenderLayer"].use_pass_combined = True
 bpy.context.scene.render.layers["RenderLayer"].use_pass_z = True
-bpy.context.scene.render.layers["RenderLayer"].use_pass_ambient_occlusion = True
+#bpy.context.scene.render.layers["RenderLayer"].use_pass_ambient_occlusion = True
 bpy.context.scene.render.layers["RenderLayer"].use_pass_diffuse_direct = True
 bpy.context.scene.render.layers["RenderLayer"].use_pass_diffuse_indirect = True
 bpy.context.scene.render.layers["RenderLayer"].use_pass_diffuse_color = True
@@ -74,7 +80,7 @@ out_node.base_path=result_path
 position_f=0
 pos_changer=-1
 #outputs_required=['Image','Emit', 'Normal','Depth','Shadow','IndexOB','DiffCol']  
-outputs_required=['Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','DiffCol','Diffuse','Specular']  
+outputs_required=['Albedo','Image','Emit','DiffDir','DiffInd','GlossDir','GlossInd','GlossCol', 'Normal','Depth','Shadow','IndexOB','Diffuse','Specular','Transmission','Lightmap']  
 for cur_out in outputs_required:
     current_out_path=os.path.join(result_path,cur_out)
     create_directory(current_out_path)
@@ -87,7 +93,56 @@ for cur_out in outputs_required:
     out_node.file_slots[cur_out].use_node_format=False
     out_node.file_slots[cur_out].format.file_format="JPEG"    
     out_node.base_path=current_out_path
-    if cur_out=='Diffuse' or cur_out=='Specular': 
+    if cur_out=='Albedo' : 
+	    less_Than = tree.nodes.new('CompositorNodeMath') 
+	    mult_albedo_node = tree.nodes.new('CompositorNodeMixRGB')
+	    add_albedo_node = tree.nodes.new('CompositorNodeMixRGB')
+	    add_albedo_emit_node = tree.nodes.new('CompositorNodeMixRGB')
+	    less_Than.location = 330,200
+	    mult_albedo_node.location = 480,200
+	    add_albedo_node.location = 630,200
+	    add_albedo_emit_node.location = 780,200
+	    less_Than.operation='LESS_THAN'
+	    mult_albedo_node.blend_type='MULTIPLY'
+	    add_albedo_node.blend_type='ADD'            
+	    add_albedo_emit_node.blend_type='ADD'            
+	    less_Than.inputs[1].default_value=0.0039
+	    link = links.new(NodeRLayers.outputs['DiffCol'], less_Than.inputs[0])
+	    link = links.new(less_Than.outputs[0], mult_albedo_node.inputs[1])
+	    link = links.new(NodeRLayers.outputs['GlossCol'], mult_albedo_node.inputs[2])
+	    link = links.new(mult_albedo_node.outputs[0], add_albedo_node.inputs[1])
+	    link = links.new(NodeRLayers.outputs['DiffCol'], add_albedo_node.inputs[2])
+	    link = links.new(add_albedo_node.outputs[0], add_albedo_emit_node.inputs[1])
+	    link = links.new(NodeRLayers.outputs['Emit'], add_albedo_emit_node.inputs[2])
+	    link = links.new(add_albedo_emit_node.outputs[0], out_node.inputs[cur_out])
+	    continue
+        
+    if cur_out=='Lightmap' : 
+        add_diff_emit_Light = tree.nodes.new('CompositorNodeMixRGB') 
+        add_diff_emit_spec_Light = tree.nodes.new('CompositorNodeMixRGB')
+        add_diff_emit_spec_trans_Light = tree.nodes.new('CompositorNodeMixRGB')
+        add_diff_emit_spec_trans_env_Light = tree.nodes.new('CompositorNodeMixRGB')
+
+        add_diff_emit_Light.location = 1200,200
+        add_diff_emit_spec_Light.location = 1200,0
+        add_diff_emit_spec_trans_Light.location = 1200,-200
+        add_diff_emit_spec_trans_env_Light.location = 1200,-400
+        add_diff_emit_Light.blend_type='ADD'            
+        add_diff_emit_spec_Light.blend_type='ADD'
+        add_diff_emit_spec_trans_Light.blend_type='ADD'
+        add_diff_emit_spec_trans_env_Light.blend_type='ADD'
+        link = links.new(add_node.outputs[0], add_diff_emit_Light.inputs[1])
+        link = links.new(NodeRLayers.outputs['Emit'], add_diff_emit_Light.inputs[2])
+        link = links.new(add_diff_emit_Light.outputs[0], add_diff_emit_spec_Light.inputs[1])
+        link = links.new(add_node_s.outputs[0], add_diff_emit_spec_Light.inputs[2])
+        link = links.new(add_diff_emit_spec_Light.outputs[0], add_diff_emit_spec_trans_Light.inputs[1])
+        link = links.new(add_node_tr.outputs[0], add_diff_emit_spec_trans_Light.inputs[2])
+        link = links.new(add_diff_emit_spec_trans_Light.outputs[0], add_diff_emit_spec_trans_env_Light.inputs[1])
+        link = links.new(NodeRLayers.outputs['Env'], add_diff_emit_spec_trans_env_Light.inputs[2])
+        link = links.new(add_diff_emit_spec_trans_env_Light.outputs[0], out_node.inputs[cur_out])
+        continue
+
+    if cur_out=='Diffuse' or cur_out=='Specular' or cur_out=='Transmission': 
         if cur_out=='Diffuse':
             add_node = tree.nodes.new('CompositorNodeMixRGB') 
             mult_node = tree.nodes.new('CompositorNodeMixRGB')
@@ -101,10 +156,11 @@ for cur_out in outputs_required:
             link = links.new(NodeRLayers.outputs['DiffDir'], add_node.inputs[1])
             link = links.new(NodeRLayers.outputs['DiffInd'], add_node.inputs[2])
             link = links.new(add_node.outputs[0], mult_node.inputs[1])
-            link = links.new(NodeRLayers.outputs['DiffCol'], mult_node.inputs[2])
-            link = links.new(mult_node.outputs[0], add_emit_node.inputs[1])
-            link = links.new(NodeRLayers.outputs['Emit'], add_emit_node.inputs[2])
-            link = links.new(add_emit_node.outputs[0], out_node.inputs[cur_out])            
+            link = links.new(add_albedo_emit_node.outputs[0], mult_node.inputs[2])
+            #link = links.new(mult_node.outputs[0], add_emit_node.inputs[1])
+            #link = links.new(NodeRLayers.outputs['Emit'], add_emit_node.inputs[2])
+            #link = links.new(add_emit_node.outputs[0], out_node.inputs[cur_out])
+            link = links.new(mult_node.outputs[0], out_node.inputs[cur_out])              
         if cur_out=='Specular':
             add_node_s = tree.nodes.new('CompositorNodeMixRGB') 
             mult_node_s = tree.nodes.new('CompositorNodeMixRGB')
@@ -116,8 +172,22 @@ for cur_out in outputs_required:
             link = links.new(NodeRLayers.outputs['GlossInd'], add_node_s.inputs[2])
             link = links.new(add_node_s.outputs[0], mult_node_s.inputs[1])
             link = links.new(add_node_s.outputs[0], out_node.inputs[cur_out])
-            #link = links.new(NodeRLayers.outputs['GlossCol'], mult_node_s.inputs[2])
-            #link = links.new(mult_node_s.outputs[0], out_node.inputs[cur_out]) 
+            link = links.new(NodeRLayers.outputs['GlossCol'], mult_node_s.inputs[2])
+            link = links.new(mult_node_s.outputs[0], out_node.inputs[cur_out]) 
+        if cur_out=='Transmission':
+            add_node_tr = tree.nodes.new('CompositorNodeMixRGB') 
+            mult_node_tr = tree.nodes.new('CompositorNodeMixRGB')
+            add_node_tr.location = 330,-750
+            mult_node_tr.location = 480,-750
+            add_node_tr.blend_type='ADD'
+            mult_node_tr.blend_type='MULTIPLY'
+            link = links.new(NodeRLayers.outputs['TransDir'], add_node_tr.inputs[1])
+            link = links.new(NodeRLayers.outputs['TransInd'], add_node_tr.inputs[2])
+            link = links.new(add_node_tr.outputs[0], mult_node_tr.inputs[1])
+            link = links.new(add_node_tr.outputs[0], out_node.inputs[cur_out])
+            #link = links.new(NodeRLayers.outputs['GlossCol'], mult_node_tr.inputs[2])
+            #link = links.new(mult_node_tr.outputs[0], out_node.inputs[cur_out]) 
+
         continue
         
     
