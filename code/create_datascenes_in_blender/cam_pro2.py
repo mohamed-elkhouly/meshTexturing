@@ -359,7 +359,7 @@ except:
                 
 
 for count,state in enumerate(cam_state):
-	#bpy.context.scene.frame_set(count)
+    bpy.context.scene.frame_set(count)
     obj_camera.location.x = state[0]
     obj_camera.location.y = state[1]
     obj_camera.location.z = state[2]
