@@ -156,7 +156,7 @@ for cur_out in outputs_required:
             link = links.new(NodeRLayers.outputs['DiffDir'], add_node.inputs[1])
             link = links.new(NodeRLayers.outputs['DiffInd'], add_node.inputs[2])
             link = links.new(add_node.outputs[0], mult_node.inputs[1])
-            link = links.new(add_albedo_emit_node.outputs[0], mult_node.inputs[2])
+            link = links.new(NodeRLayers.outputs['DiffCol'], mult_node.inputs[2])
             #link = links.new(mult_node.outputs[0], add_emit_node.inputs[1])
             #link = links.new(NodeRLayers.outputs['Emit'], add_emit_node.inputs[2])
             #link = links.new(add_emit_node.outputs[0], out_node.inputs[cur_out])
@@ -184,9 +184,9 @@ for cur_out in outputs_required:
             link = links.new(NodeRLayers.outputs['TransDir'], add_node_tr.inputs[1])
             link = links.new(NodeRLayers.outputs['TransInd'], add_node_tr.inputs[2])
             link = links.new(add_node_tr.outputs[0], mult_node_tr.inputs[1])
-            link = links.new(add_node_tr.outputs[0], out_node.inputs[cur_out])
-            #link = links.new(NodeRLayers.outputs['GlossCol'], mult_node_tr.inputs[2])
-            #link = links.new(mult_node_tr.outputs[0], out_node.inputs[cur_out]) 
+            #link = links.new(add_node_tr.outputs[0], out_node.inputs[cur_out])
+            link = links.new(NodeRLayers.outputs['TransCol'], mult_node_tr.inputs[2])
+            link = links.new(mult_node_tr.outputs[0], out_node.inputs[cur_out]) 
 
         continue
         

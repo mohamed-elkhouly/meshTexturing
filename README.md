@@ -129,7 +129,9 @@ meshTexturing/code/create_datascenes_in_blender/Enable_rendering_passes.py
 
 Note: remember that we set the max of depth is 200
 
-Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics (the id of each object has been set on the file (cam_pro2.py) also note that the name of the output file is the same number of current keyframe which I change with each render.
+Note: the id of each object has been set on the file (   .py)
+
+Note: remember that we set the max of number of objects is 50 and the object pass_index is random not based on semantics ( also note that the name of the output file is the same number of current keyframe which I change with each render.
 
 >> Albedo = DiffCol + GlossCol + Emit 
 
@@ -137,8 +139,16 @@ Note: remember that we set the max of number of objects is 50 and the object pas
 
 >> Specular = (( GlossDir + GlossInd ) *  GlossCol)
 
->> lightmap = Diffuse + Specular + Transmittion + Emit + Env       exactly like blender combination of passes but without using the colors (DiffCol, GlossCol, TransCol), only shading 
+>> Transmittion = (( TransDir + TransInd ) *  TransCol)
+
+>> lightmap = Diffuse + Specular + Transmittion + Emit + Env       exactly like blender combination of passes but without using the colors (DiffCol, GlossCol, TransCol), shading only no more.
 
 <p align="center">
   <img src="./IMG/blenderpasses.png" width="800" title="Deblurring results for Algorithm 1 using PG-GAN against baseline methods">
 </p> 
+
+Any other value like Depth, IndexOB, etc each one will take direct value , e.g. 
+
+>> Depth = depth.
+
+>> IndexOB = IndexOB
