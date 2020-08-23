@@ -137,4 +137,8 @@ Note: remember that we set the max of number of objects is 50 and the object pas
 
 >> Specular = (( GlossDir + GlossInd ) *  GlossCol)
 
->> lightmap = Diffuse + Specular + Transmittion + Emit + Env       exactly like blender combination of passes but without using the colors (DiffCol, GlossCol, TransCol), only shading  (IMG/blenderpasses.png)
+>> lightmap = Diffuse + Specular + Transmittion + Emit + Env       exactly like blender combination of passes but without using the colors (DiffCol, GlossCol, TransCol), only shading 
+
+<p align="center">
+  <img src="./IMG/blenderpasses.png" width="800" title="Deblurring results for Algorithm 1 using PG-GAN against baseline methods">
+</p> 
