@@ -68,21 +68,21 @@ def mesh_refine_blender(obj,maxfacearea=0.008):
 blend_file_path = bpy.data.filepath
 directory = os.path.dirname(blend_file_path) 
 path=os.path.join(directory,"temp_directory")
-try:
-    os.mkdir(path)
-except OSError:
-    print ("Creation of the directory %s failed" % path)
-    if os.path.isdir(path):
+# try:
+#     os.mkdir(path)
+# except OSError:
+#     print ("Creation of the directory %s failed" % path)
+#     if os.path.isdir(path):
         
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                os.remove(os.path.join(root, file))
-        #copyfile(os.path.join(directory,"SimplifyMesh.exe "), os.path.join(path,"SimplifyMesh.exe "))
-        directory=path
-else:
-    print ("Successfully created the directory %s " % path)
-    #copyfile(os.path.join(directory,"SimplifyMesh.exe "), os.path.join(path,"SimplifyMesh.exe "))
-    directory=path 
+#         for root, dirs, files in os.walk(path):
+#             for file in files:
+#                 os.remove(os.path.join(root, file))
+#         #copyfile(os.path.join(directory,"SimplifyMesh.exe "), os.path.join(path,"SimplifyMesh.exe "))
+#         directory=path
+# else:
+#     print ("Successfully created the directory %s " % path)
+#     #copyfile(os.path.join(directory,"SimplifyMesh.exe "), os.path.join(path,"SimplifyMesh.exe "))
+#     directory=path 
         
 try:
     bpy.ops.object.mode_set(mode='OBJECT')
@@ -138,6 +138,11 @@ for obj in bpy.data.objects:
             continue
         bpy.ops.object.make_single_user(object=True,obdata=True,material=True, animation=True)
         
+        
+        # Set the current scale to object as the original scale (e.g. if the object enlarged, this enlarge will be as its original size)
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+
+
         bpy.ops.object.modifier_add(type='DECIMATE')
         obj.modifiers["Decimate"].delimit={'NORMAL', 'MATERIAL', 'SEAM'}
         obj.modifiers["Decimate"].angle_limit=5*3.14/180
@@ -151,7 +156,7 @@ for obj in bpy.data.objects:
                     d=[]
         
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+        
         
         
         

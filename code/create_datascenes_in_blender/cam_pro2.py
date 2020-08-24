@@ -194,7 +194,7 @@ sensor_width=32;
 #sensor_fit=AUTO;
 width = 1280;
 height = 1024;
-render_samples=10
+render_samples=5
 output_format='JPEG'
 
 
@@ -228,13 +228,13 @@ bpy.context.scene.render.engine = 'CYCLES'
 scene = bpy.context.scene.cycles.device = 'GPU'
 blend_file_path = bpy.data.filepath
 directory = os.path.dirname(blend_file_path) 
-path=os.path.join(directory,"rendered_images/")
+#path=os.path.join(directory,"rendered_images/")
 
 
-try:
-    os.mkdir(path)
-except:
-    d=[]
+#try:
+#    os.mkdir(path)
+#except:
+#    d=[]
 
 '''
 #sunny room
