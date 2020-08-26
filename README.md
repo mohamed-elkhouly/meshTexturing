@@ -161,4 +161,4 @@ For blender to use IES files inside blender
   <img src="./IMG/IES_IDEA.jpg" width="800" title="Deblurring results for Algorithm 1 using PG-GAN against baseline methods">
 </p> 
 
-The IES to CYCLES addon is in /code/addons/
+The IES to CYCLES addon is in /code/create_datascenes_in_blender/ies2cycles.py
