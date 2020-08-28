@@ -152,3 +152,16 @@ Any other value like Depth, IndexOB, etc each one will take direct value , e.g.
 >> Depth = depth.
 
 >> IndexOB = IndexOB
+
+
+=======================================================
+
+
+For blender to use IES files inside blender
+
+<p align="center">
+  <img src="./IMG/IES_IDEA.jpg" width="800" title="Deblurring results for Algorithm 1 using PG-GAN against baseline methods">
+</p> 
+
+The IES to CYCLES addon is in /code/create_datascenes_in_blender/ies2cycles.py
+if you want the original page how to use it (importing and converting to png while importing, etc ) check : https://blenderartists.org/t/ies-lamps-to-cycles/560285
