@@ -22,7 +22,8 @@ bpy.ops.text.open(filepath=path)
 
 
 # Render related viewpoints 
-filename = "cam_pro2.py"
+# filename = "cam_pro2.py"
+filename = "Cam_Rendering.py"  # this Cam_Rendering.py is the new version of  cam_pro2.py in which light info has been extracted
 path=os.path.join(directory,filename)
 bpy.ops.text.open(filepath=path)
 exec(bpy.data.texts[filename].as_string())
